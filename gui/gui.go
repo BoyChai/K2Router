@@ -39,7 +39,7 @@ func init() {
 func RunGui() {
 	// app
 	gui := app.New()
-	window := gui.NewWindow("K2p一键设置")
+	window := gui.NewWindow("K2一键设置")
 	// 整体布局
 	grid := layout.NewGridLayout(3)
 
@@ -67,9 +67,9 @@ func GetInfo() (*widget.Entry, *widget.Entry, *widget.Entry, *widget.Entry, *wid
 	Wifi5GSsid := widget.NewEntry()
 	Wifi5GPas := widget.NewEntry()
 	adminPas.Text = "12345678"
-	Wifi2GSsid.Text = "PHICN"
+	Wifi2GSsid.Text = "PHICN-WiFi"
 	Wifi2GPas.Text = "12345678"
-	Wifi5GSsid.Text = "PHICN_5G"
+	Wifi5GSsid.Text = "PHICN-WiFi_5G"
 	Wifi5GPas.Text = "12345678"
 	return adminPas, Wifi2GSsid, Wifi2GPas, Wifi5GSsid, Wifi5GPas
 }
@@ -80,27 +80,6 @@ func getBase64(value string) string {
 func Btn(adminPas, Wifi2GSsid, Wifi2GPas, Wifi5GSsid, Wifi5GPas *widget.Entry) *fyne.Container {
 	text := widget.NewLabel("K2路由器一键设置DEBUG\n")
 	out := container.New(layout.NewGridLayoutWithRows(1), text)
-	pass := getBase64(adminPas.Text)
-	name2g := Wifi2GSsid.Text
-	pass2g := Wifi2GPas.Text
-	name5g := Wifi5GSsid.Text
-	pass5g := Wifi5GPas.Text
-	if len(pass) <= 5 {
-
-		//fmt.Println(2)
-		text.SetText("管理员密码长度请设置5位以上\n")
-
-	} else if len(pass2g) < 8 {
-
-		//fmt.Println(3)
-		//text.Text += "WIFI2G密码长度请设置6位以上\n"
-		text.SetText("WIFI2G密码长度请设置7位以上\n")
-
-	} else if len(pass5g) < 8 {
-		//fmt.Println(4)
-		//text.Text += "WIFI5G密码长度请设置6位以上\n"
-		text.SetText("WIFI5G密码长度请设置7位以上\n")
-	}
 	var wg sync.WaitGroup
 	// 扫描按钮
 	var bt0 *widget.Button
@@ -135,6 +114,27 @@ func Btn(adminPas, Wifi2GSsid, Wifi2GPas, Wifi5GSsid, Wifi5GPas *widget.Entry) *
 		fmt.Println("解析到设备数量：", len(control.IpPool), "iP列表:", control.IpPool)
 	})
 	bt1 = widget.NewButton("设置路由器", func() {
+		pass := getBase64(adminPas.Text)
+		name2g := Wifi2GSsid.Text
+		pass2g := Wifi2GPas.Text
+		name5g := Wifi5GSsid.Text
+		pass5g := Wifi5GPas.Text
+		if len(pass) <= 5 {
+
+			//fmt.Println(2)
+			text.SetText("管理员密码长度请设置5位以上\n")
+
+		} else if len(pass2g) < 8 {
+
+			//fmt.Println(3)
+			//text.Text += "WIFI2G密码长度请设置6位以上\n"
+			text.SetText("WIFI2G密码长度请设置7位以上\n")
+
+		} else if len(pass5g) < 8 {
+			//fmt.Println(4)
+			//text.Text += "WIFI5G密码长度请设置6位以上\n"
+			text.SetText("WIFI5G密码长度请设置7位以上\n")
+		}
 		bt1.Disabled()
 		defer bt1.Enable()
 		for _, v := range control.IpPool {
